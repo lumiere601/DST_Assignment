@@ -7,6 +7,8 @@
 
 using namespace std;
 int main() {
+    cout << "Nyani?";
+
     TransactionList transactionList;
 
     if (!transactionList.loadFromCSV("transactions_cleaned_version.csv")) {
