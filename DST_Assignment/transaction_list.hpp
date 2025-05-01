@@ -50,7 +50,7 @@ public:
         long& steps, int& total);
     int filterSearchElectronicsCreditCard(long& steps, int& total);
     TransactionNode* binarySearchByDate(int day, int month, int year, long& steps);
-    void displaySortedByDate() const;
+    int countByCategory(const std::string& category, long& steps, int& total);
 };
 
 #endif // TRANSACTION_HPP

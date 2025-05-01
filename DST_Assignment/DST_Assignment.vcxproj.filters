@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Desktop\DST_Assignment\cleaning_finale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="review_list.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="transaction.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="review.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

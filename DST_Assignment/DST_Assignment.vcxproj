@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Desktop\DST_Assignment\cleaning_finale.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="review_list.cpp" />
     <ClCompile Include="review_array.cpp" />
@@ -137,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="review.hpp" />
     <ClInclude Include="review_array.hpp" />
     <ClInclude Include="transaction.hpp" />
     <ClInclude Include="transaction_list.hpp" />

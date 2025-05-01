@@ -77,18 +77,6 @@ int TransactionList::getSize() const {
     return size;
 }
 
-// Print all transactions
-void TransactionList::printAll() const {
-    TransactionNode* current = head;
-    while (current != nullptr) {
-        std::cout << current->customerID << ", " << current->product << ", "
-                  << current->category << ", " << current->price << ", "
-                  << current->day << "/" << current->month << "/" << current->year << ", "
-                  << current->paymentMethod << std::endl;
-        current = current->next;
-    }
-}
-
 // Swap helper function for sorting
 void TransactionList::swap(TransactionNode* a, TransactionNode* b) {
     std::swap(a->customerID, b->customerID);
@@ -310,6 +298,20 @@ int TransactionList::linearSearchByCategoryAndPayment(const std::string& categor
 }
 
 // Filter search for electronics and credit card
+int TransactionList::countByCategory(const std::string& category, long& steps, int& total) {
+    steps = 0;
+    total = 0;
+    TransactionNode* current = head;
+    while (current != nullptr) {
+        steps++;
+        if (current->category == category) {
+            total++;
+        }
+        current = current->next;
+    }
+    return total;
+}
+
 int TransactionList::filterSearchElectronicsCreditCard(long& steps, int& total) {
     return linearSearchByCategoryAndPayment("Electronics", "Credit Card", steps, total);
 }
@@ -343,7 +345,7 @@ TransactionNode* TransactionList::binarySearchByDate(int day, int month, int yea
     return nullptr;
 }
 
-void TransactionList::displaySortedByDate() const {
+void TransactionList::printAll() const {
     if (!head) {
         std::cout << "No transactions to display.\n";
         return;

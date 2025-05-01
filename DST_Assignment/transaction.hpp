@@ -24,18 +24,6 @@ public:
         char delimiter;
         ss >> day >> delimiter >> month >> delimiter >> year;
     }
-
-    // Optional: Function to print transaction details (for debugging)
-    void printTransaction() const {
-        std::cout << "Customer ID: " << customerID << ", "
-                  << "Product: " << product << ", "
-                  << "Category: " << category << ", "
-                  << "Price: " << price << ", "
-                  << "Date: " << std::setw(2) << std::setfill('0') << day << "/"
-                  << std::setw(2) << std::setfill('0') << month << "/"
-                  << year << ", "
-                  << "Payment Method: " << paymentMethod << std::endl;
-    }
 };
 
 #endif // TRANSACTION_HPP // End the guard
