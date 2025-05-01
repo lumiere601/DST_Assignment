@@ -31,7 +31,7 @@ public:
     // Function to load reviews from CSV into the linked list
     void loadFromCSV(const std::string& filename);
 
-    void displayAll();
+    void displayAll() const;
 
     // Function to filter out 1-star reviews
     void collectOneStarReviews(ReviewNode*& filteredHead);

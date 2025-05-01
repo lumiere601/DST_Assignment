@@ -11,14 +11,14 @@ const std::string categories[] = { "Electronics", "Sports", "Groceries", "Furnit
 const std::string paymentMethods[] = { "Bank Transfer", "PayPal", "Credit Card", "Cash on Delivery", "Debit Card" };
 
 // Function to display categories and payment methods for user input
-void displayCategories() {
+static void displayCategories() {
     std::cout << "Available Categories: \n";
     for (size_t i = 0; i < sizeof(categories) / sizeof(categories[0]); ++i) {
         std::cout << (i + 1) << ". " << categories[i] << std::endl;
     }
 }
 
-void displayPaymentMethods() {
+static void displayPaymentMethods() {
     std::cout << "Available Payment Methods: \n";
     for (size_t i = 0; i < sizeof(paymentMethods) / sizeof(paymentMethods[0]); ++i) {
         std::cout << (i + 1) << ". " << paymentMethods[i] << std::endl;
@@ -105,14 +105,12 @@ int main() {
     //std::string payment;
     //long stepsFilter = 0, stepsTotal = 0;
     //int totalFiltered = 0, totalCategory = 0;
-
     //// Display options and get user input for category
     //displayCategories();
     //std::cout << "Enter category number to filter by (1-" << sizeof(categories) / sizeof(categories[0]) << "): ";
     //int categoryChoice;
     //std::cin >> categoryChoice;
     //std::cin.ignore();  // Ignore the newline character left in the buffer
-
     //// Validate and set category based on user choice
     //if (categoryChoice >= 1 && categoryChoice <= sizeof(categories) / sizeof(categories[0])) {
     //    category = categories[categoryChoice - 1];  // Select category based on user input
@@ -121,14 +119,12 @@ int main() {
     //    std::cout << "Invalid category choice! Exiting...\n";
     //    return 1;
     //}
-
     //// Display options and get user input for payment method
     //displayPaymentMethods();
     //std::cout << "Enter payment method number to filter by (1-" << sizeof(paymentMethods) / sizeof(paymentMethods[0]) << "): ";
     //int paymentChoice;
     //std::cin >> paymentChoice;
     //std::cin.ignore();  // Ignore the newline character left in the buffer
-
     //// Validate and set payment method based on user choice
     //if (paymentChoice >= 1 && paymentChoice <= sizeof(paymentMethods) / sizeof(paymentMethods[0])) {
     //    payment = paymentMethods[paymentChoice - 1];  // Select payment method based on user input
@@ -137,21 +133,17 @@ int main() {
     //    std::cout << "Invalid payment method choice! Exiting...\n";
     //    return 1;
     //}
-
     //// Perform linear search by category and payment method
     //transactionList.linearSearchByCategoryAndPayment(category, payment, stepsFilter, totalFiltered);
     //std::cout << "Total transactions in category '" << category << "' with payment method '" << payment << "': " << totalFiltered << std::endl;
     //std::cout << "Steps taken during search: " << stepsFilter << std::endl;
-
     //// Perform count by selected category
     //transactionList.countByCategory(category, stepsTotal, totalCategory);
-
     //// Calculate the percentage
     //double percentage = 0.0;
     //if (totalCategory > 0) {
     //    percentage = (static_cast<double>(totalFiltered) / totalCategory) * 100.0;
     //}
-
     //std::cout << "\nResults for Category: '" << category << "' and Payment Method: '" << payment << "'\n";
     //std::cout << "--------------------------------------------------------------\n";
     //std::cout << "Total transactions in category '" << category << "': " << totalCategory << std::endl;

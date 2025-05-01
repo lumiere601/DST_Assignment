@@ -1,24 +1,20 @@
-#ifndef TRANSACTION_HPP
-#define TRANSACTION_HPP
+#ifndef TRANSACTION_LIST_HPP
+#define TRANSACTION_LIST_HPP
 
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include "transaction.hpp"
 
-class TransactionNode {
+struct TransactionNode {
 public:
-    std::string customerID;
-    std::string product;
-    std::string category;
-    double price;
-    int day, month, year;
-    std::string paymentMethod;
+    Transaction data;
     TransactionNode* next;
     TransactionNode* prev;
-
-    TransactionNode(const std::string& cid, const std::string& prod, const std::string& cat,
-        double pr, int d, int m, int y, const std::string& pay);
+    TransactionNode(const Transaction& t)
+        : data(t), next(nullptr), prev(nullptr) {
+    }
 };
 
 class TransactionList {
@@ -33,7 +29,7 @@ private:
     TransactionNode* getMiddle(TransactionNode* head);
 
 public:
-    TransactionList();
+    TransactionList() : head(nullptr), tail(nullptr), size(0) {}
     ~TransactionList();
     bool loadFromCSV(const std::string& filename);
     void append(const std::string& cid, const std::string& prod, const std::string& cat,    
@@ -53,4 +49,4 @@ public:
     int countByCategory(const std::string& category, long& steps, int& total);
 };
 
-#endif // TRANSACTION_HPP
+#endif // TRANSACTION_LIST_HPP

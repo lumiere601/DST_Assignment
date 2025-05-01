@@ -4,15 +4,6 @@
 #include <sstream>
 #include <iomanip>
 
-// Constructor for TransactionNode
-TransactionNode::TransactionNode(const std::string& cid, const std::string& prod, const std::string& cat,
-                                 double pr, int d, int m, int y, const std::string& pay)
-    : customerID(cid), product(prod), category(cat), price(pr), day(d), month(m), year(y), paymentMethod(pay), next(nullptr), prev(nullptr) {
-}
-
-// Constructor for TransactionList
-TransactionList::TransactionList() : head(nullptr), tail(nullptr), size(0) {}
-
 // Destructor for TransactionList
 TransactionList::~TransactionList() {
     TransactionNode* current = head;
@@ -26,7 +17,10 @@ TransactionList::~TransactionList() {
 // Append method to add transactions to the list
 void TransactionList::append(const std::string& cid, const std::string& prod, const std::string& cat,
                               double pr, int d, int m, int y, const std::string& pay) {
-    TransactionNode* newNode = new TransactionNode(cid, prod, cat, pr, d, m, y, pay);
+
+    Transaction transaction(cid, prod, cat, pr, d, m, y, pay);
+    TransactionNode* newNode = new TransactionNode(transaction);
+
     if (head == nullptr) {
         head = tail = newNode;
     }
@@ -79,14 +73,14 @@ int TransactionList::getSize() const {
 
 // Swap helper function for sorting
 void TransactionList::swap(TransactionNode* a, TransactionNode* b) {
-    std::swap(a->customerID, b->customerID);
-    std::swap(a->product, b->product);
-    std::swap(a->category, b->category);
-    std::swap(a->price, b->price);
-    std::swap(a->day, b->day);
-    std::swap(a->month, b->month);
-    std::swap(a->year, b->year);
-    std::swap(a->paymentMethod, b->paymentMethod);
+    std::swap(a->data.customerID, b->data.customerID);
+    std::swap(a->data.product, b->data.product);
+    std::swap(a->data.category, b->data.category);
+    std::swap(a->data.price, b->data.price);
+    std::swap(a->data.day, b->data.day);
+    std::swap(a->data.month, b->data.month);
+    std::swap(a->data.year, b->data.year);
+    std::swap(a->data.paymentMethod, b->data.paymentMethod);
 }
 
 // Bubble sort by date
@@ -96,9 +90,9 @@ void TransactionList::bubbleSortByDate(long& comparisons, long& swaps) {
         swapped = false;
         for (TransactionNode* j = head; j != nullptr && j->next != nullptr; j = j->next) {
             comparisons++;
-            if (j->year > j->next->year ||
-                (j->year == j->next->year && j->month > j->next->month) ||
-                (j->year == j->next->year && j->month == j->next->month && j->day > j->next->day)) {
+            if (j->data.year > j->next->data.year ||
+                (j->data.year == j->next->data.year && j->data.month > j->next->data.month) ||
+                (j->data.year == j->next->data.year && j->data.month == j->next->data.month && j->data.day > j->next->data.day)) {
                 swap(j, j->next);
                 swapped = true;
                 swaps++;
@@ -118,9 +112,9 @@ void TransactionList::insertionSortByDate(long& comparisons, long& swaps) {
         TransactionNode* j = i->prev;  // The node before 'key'
 
         // Move elements that are greater than 'key' to the right
-        while (j != nullptr && (j->year > key->year ||
-            (j->year == key->year && j->month > key->month) ||
-            (j->year == key->year && j->month == key->month && j->day > key->day))) {
+        while (j != nullptr && (j->data.year > key->data.year ||
+            (j->data.year == key->data.year && j->data.month > key->data.month) ||
+            (j->data.year == key->data.year && j->data.month == key->data.month && j->data.day > key->data.day))) {
             comparisons++;
 
             // Move the 'j' node one step to the right (adjust pointers)
@@ -222,7 +216,8 @@ TransactionNode* TransactionList::getMiddle(TransactionNode* head) {
 }
 
 TransactionNode* TransactionList::mergeSortedLists(TransactionNode* left, TransactionNode* right, long& comparisons, long& swaps) {
-    TransactionNode* dummy = new TransactionNode("", "", "", 0.0, 0, 0, 0, "");
+    Transaction transaction("", "", "", 0.0, 0, 0, 0, "");
+    TransactionNode* dummy = new TransactionNode(transaction);
     TransactionNode* tail = dummy;
 
     while (left && right) {
@@ -230,15 +225,15 @@ TransactionNode* TransactionList::mergeSortedLists(TransactionNode* left, Transa
 
         bool isLeftEarlier = false;
 
-        if (left->year < right->year) {
+        if (left->data.year < right->data.year) {
             isLeftEarlier = true;
         }
-        else if (left->year == right->year) {
-            if (left->month < right->month) {
+        else if (left->data.year == right->data.year) {
+            if (left->data.month < right->data.month) {
                 isLeftEarlier = true;
             }
-            else if (left->month == right->month) {
-                if (left->day <= right->day) {
+            else if (left->data.month == right->data.month) {
+                if (left->data.day <= right->data.day) {
                     isLeftEarlier = true;
                 }
             }
@@ -289,7 +284,7 @@ int TransactionList::linearSearchByCategoryAndPayment(const std::string& categor
     TransactionNode* current = head;
     while (current != nullptr) {
         steps++;
-        if (current->category == category && current->paymentMethod == payment) {
+        if (current->data.category == category && current->data.paymentMethod == payment) {
             total++;
         }
         current = current->next;
@@ -304,7 +299,7 @@ int TransactionList::countByCategory(const std::string& category, long& steps, i
     TransactionNode* current = head;
     while (current != nullptr) {
         steps++;
-        if (current->category == category) {
+        if (current->data.category == category) {
             total++;
         }
         current = current->next;
@@ -329,11 +324,11 @@ TransactionNode* TransactionList::binarySearchByDate(int day, int month, int yea
             current = current->next;
         }
 
-        if (current->day == day && current->month == month && current->year == year) {
+        if (current->data.day == day && current->data.month == month && current->data.year == year) {
             return current;
         }
-        else if (current->year < year || (current->year == year && current->month < month) ||
-                 (current->year == year && current->month == month && current->day < day)) {
+        else if (current->data.year < year || (current->data.year == year && current->data.month < month) ||
+                 (current->data.year == year && current->data.month == month && current->data.day < day)) {
             low = mid + 1;
         }
         else {
@@ -357,10 +352,10 @@ void TransactionList::printAll() const {
 
     while (current) {
         // Format the date as day/month/year
-        std::cout << current->day << "/" << current->month << "/" << current->year << " | "
-            << current->category << " | "
-            << current->paymentMethod << " | RM"
-            << current->price << std::endl;
+        std::cout << current->data.day << "/" << current->data.month << "/" << current->data.year << " | "
+            << current->data.category << " | "
+            << current->data.paymentMethod << " | RM"
+            << current->data.price << std::endl;
         current = current->next;
     }
 

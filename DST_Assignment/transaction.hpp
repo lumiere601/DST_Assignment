@@ -18,6 +18,13 @@ public:
     // Constructor to initialize with default values
     Transaction() : price(0.0), day(0), month(0), year(0) {}
 
+    //Constructor to actual value
+    Transaction(const std::string& cid, const std::string& prod, const std::string& cat,
+        double pr, int d, int m, int y, const std::string& pay)
+        : customerID(cid), product(prod), category(cat), price(pr),
+        day(d), month(m), year(y), paymentMethod(pay) {
+    }
+
     // Function to parse date in the format DD/MM/YYYY
     void parseDate(const std::string& dateStr) {
         std::stringstream ss(dateStr);
@@ -26,4 +33,4 @@ public:
     }
 };
 
-#endif // TRANSACTION_HPP // End the guard
+#endif

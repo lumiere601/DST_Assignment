@@ -60,7 +60,7 @@ void ReviewList::loadFromCSV(const std::string& filename) {
     std::cout << "Total reviews: " << lineCount << std::endl;
 }
 
-void ReviewList::displayAll() {
+void ReviewList::displayAll() const {
     ReviewNode* current = head;
     int index = 1;
 
