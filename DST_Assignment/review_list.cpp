@@ -71,7 +71,7 @@ void ReviewList::displayAll() const {
 
     while (current != nullptr) {
         std::cout << "Review #" << index++ << ": Customer ID: " << current->data.customerID
-            << ", Product: " << current->data.product
+            << ", Product: " << current->data.productID
             << ", Rating: " << current->data.rating
             << ", Review Text: " << current->data.reviewText << std::endl;
         current = current->next;
@@ -117,7 +117,7 @@ void ReviewList::collectOneStarReviews(ReviewNode*& filteredHead) {
         while (temp != nullptr) {
             std::cout << "Review #" << reviewNumber++ << ": Rating: " << temp->data.rating
                 << ", Customer ID: " << temp->data.customerID
-                << ", Product: " << temp->data.product
+                << ", Product: " << temp->data.productID
                 << ", Review Text: " << temp->data.reviewText << std::endl;
             temp = temp->next;
         }
@@ -187,7 +187,7 @@ void ReviewList::displayAllWords(WordFreqNode* wordHead) {
 }
 
 // Function to track performance metrics (steps for search operations)
-void ReviewList::trackPerformanceMetrics() {
+void ReviewList::trackPerformanceMetrics() const {
     std::cout << "\n[Performance Metrics for Linear Searching]\n";
     std::cout << "Total steps taken during searching: " << steps << std::endl;
     std::cout << std::endl;

@@ -1,5 +1,5 @@
-﻿  main.cpp
-  review_list.cpp
+﻿  cleaning_file.cpp
+  linked_list_main_program.cpp
   Generating Code...
 x64\Debug\review_list.obj : warning LNK4042: object specified more than once; extras ignored
   DST_Assignment.vcxproj -> C:\Users\User\source\repos\DST_Assignment\x64\Debug\DST_Assignment.exe

@@ -31,6 +31,19 @@ public:
         char delimiter;
         ss >> day >> delimiter >> month >> delimiter >> year;
     }
-};
 
+    bool isEarlierThan(const Transaction& other) const {
+        if (year != other.year) return year < other.year;
+        if (month != other.month) return month < other.month;
+        return day < other.day;
+    }
+
+    std::string getDateString() const {
+        std::ostringstream oss;
+        oss << std::setw(2) << std::setfill('0') << day << "/"
+            << std::setw(2) << std::setfill('0') << month << "/"
+            << std::setw(4) << std::setfill('0') << year;
+        return oss.str();
+    }
+};
 #endif

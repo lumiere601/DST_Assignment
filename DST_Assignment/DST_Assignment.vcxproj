@@ -127,7 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="array_main_program.cpp" />
+    <ClCompile Include="cleaning_file.cpp" />
+    <ClCompile Include="linked_list_main_program.cpp" />
     <ClCompile Include="review_list.cpp" />
     <ClCompile Include="review_array.cpp" />
     <ClCompile Include="review_list.hpp" />
@@ -143,8 +145,8 @@
     <ClInclude Include="transaction_array.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\Desktop\DST_Assignment\uncleaned_file\reviews.csv" />
-    <None Include="..\..\..\..\Desktop\DST_Assignment\uncleaned_file\transactions.csv" />
+    <None Include="..\..\..\..\Desktop\DST_Cleaning\uncleaned_file\reviews.csv" />
+    <None Include="..\..\..\..\Desktop\DST_Cleaning\uncleaned_file\transactions.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

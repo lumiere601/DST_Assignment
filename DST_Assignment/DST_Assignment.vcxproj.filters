@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="linked_list_main_program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="review_list.cpp">
@@ -32,6 +32,12 @@
     </ClCompile>
     <ClCompile Include="review_list.hpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="array_main_program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cleaning_file.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,7 +61,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\Desktop\DST_Assignment\uncleaned_file\reviews.csv" />
-    <None Include="..\..\..\..\Desktop\DST_Assignment\uncleaned_file\transactions.csv" />
+    <None Include="..\..\..\..\Desktop\DST_Cleaning\uncleaned_file\reviews.csv" />
+    <None Include="..\..\..\..\Desktop\DST_Cleaning\uncleaned_file\transactions.csv" />
   </ItemGroup>
 </Project>

@@ -57,7 +57,7 @@ bool TransactionList::loadFromCSV(const std::string& filename) {
         ss.ignore();
         ss >> year;
         ss.ignore();
-        std::getline(ss, paymentMethod, ',');
+        std::getline(ss, paymentMethod);
 
         append(customerID, product, category, price, day, month, year, paymentMethod);
     }

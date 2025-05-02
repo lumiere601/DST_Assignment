@@ -46,7 +46,7 @@ public:
     void displayTopNWords(WordFreqNode* wordHead, int N);
 
     // Function to track performance metrics
-    void trackPerformanceMetrics();
+    void trackPerformanceMetrics() const;
 
     // Function to sort word frequencies by count (added declaration here)
     void sortWordFrequencies(WordFreqNode*& wordHead);
