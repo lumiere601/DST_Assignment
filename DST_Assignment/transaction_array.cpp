@@ -112,32 +112,6 @@ void TransactionArray::display() const {
     }
 }
 
-int TransactionArray::binarySearchByDate(const std::string& targetDate) const {
-    int targetDay, targetMonth, targetYear;
-    char delim;
-    std::stringstream ss(targetDate);
-    ss >> targetDay >> delim >> targetMonth >> delim >> targetYear;
-
-    int low = 0, high = count - 1;
-    while (low <= high) {
-        int mid = (low + high) / 2;
-        const Transaction& t = data[mid];
-
-        if (t.day == targetDay && t.month == targetMonth && t.year == targetYear) {
-            return mid;
-        }
-        if (t.year < targetYear ||
-            (t.year == targetYear && t.month < targetMonth) ||
-            (t.year == targetYear && t.month == targetMonth && t.day < targetDay)) {
-            low = mid + 1;
-        }
-        else {
-            high = mid - 1;
-        }
-    }
-    return -1;
-}
-
 void TransactionArray::printAt(int index) const {
     if (index >= 0 && index < count) {
         const Transaction& t = data[index];

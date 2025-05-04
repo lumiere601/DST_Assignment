@@ -14,8 +14,8 @@ TransactionList::~TransactionList() {
     }
 }
 
-// Append method to add transactions to the list
-void TransactionList::append(const std::string& cid, const std::string& prod, const std::string& cat,
+// InsertNodeAtBack to add transactions to the list
+void TransactionList::InsertNodeAtBack(const std::string& cid, const std::string& prod, const std::string& cat,
                               double pr, int d, int m, int y, const std::string& pay) {
 
     Transaction transaction(cid, prod, cat, pr, d, m, y, pay);
@@ -59,7 +59,7 @@ bool TransactionList::loadFromCSV(const std::string& filename) {
         ss.ignore();
         std::getline(ss, paymentMethod);
 
-        append(customerID, product, category, price, day, month, year, paymentMethod);
+        InsertNodeAtBack(customerID, product, category, price, day, month, year, paymentMethod);
     }
 
     file.close();
@@ -311,35 +311,6 @@ int TransactionList::filterSearchElectronicsCreditCard(long& steps, int& total) 
     return linearSearchByCategoryAndPayment("Electronics", "Credit Card", steps, total);
 }
 
-// Binary search by date
-TransactionNode* TransactionList::binarySearchByDate(int day, int month, int year, long& steps) {
-    TransactionNode* current = head;
-    int low = 0, high = size - 1;
-    steps = 0;
-
-    while (low <= high) {
-        int mid = (low + high) / 2;
-        current = head;
-        for (int i = 0; i < mid; ++i) {
-            current = current->next;
-        }
-
-        if (current->data.day == day && current->data.month == month && current->data.year == year) {
-            return current;
-        }
-        else if (current->data.year < year || (current->data.year == year && current->data.month < month) ||
-                 (current->data.year == year && current->data.month == month && current->data.day < day)) {
-            low = mid + 1;
-        }
-        else {
-            high = mid - 1;
-        }
-        steps++;
-    }
-
-    return nullptr;
-}
-
 void TransactionList::printAll() const {
     if (!head) {
         std::cout << "No transactions to display.\n";
@@ -347,7 +318,7 @@ void TransactionList::printAll() const {
     }
 
     TransactionNode* current = head;
-    std::cout << "\n Transactions Sorted by Date:\n";
+    std::cout << "\n Transactions dataset:\n";
     std::cout << "---------------------------------------------------------\n";
 
     while (current) {

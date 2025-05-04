@@ -23,8 +23,8 @@ struct WordFreqNode {
 
 class ReviewList {
 public:
-    ReviewNode* head;  
-    int steps;    
+    ReviewNode* head;
+    int steps;
 
     // Constructor to initialize the list
     ReviewList() : head(nullptr), steps(0) {}

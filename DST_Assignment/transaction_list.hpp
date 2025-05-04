@@ -32,7 +32,7 @@ public:
     TransactionList() : head(nullptr), tail(nullptr), size(0) {}
     ~TransactionList();
     bool loadFromCSV(const std::string& filename);
-    void append(const std::string& cid, const std::string& prod, const std::string& cat,    
+    void InsertNodeAtBack(const std::string& cid, const std::string& prod, const std::string& cat,
         double pr, int d, int m, int y, const std::string& pay);
     int getSize() const;
     void printAll() const;
@@ -45,8 +45,6 @@ public:
         const std::string& payment,
         long& steps, int& total);
     int filterSearchElectronicsCreditCard(long& steps, int& total);
-    TransactionNode* binarySearchByDate(int day, int month, int year, long& steps);
     int countByCategory(const std::string& category, long& steps, int& total);
 };
-
 #endif // TRANSACTION_LIST_HPP

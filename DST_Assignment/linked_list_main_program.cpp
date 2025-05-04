@@ -10,7 +10,7 @@ using namespace std;
 using namespace std::chrono;
 
 // Available categories and payment methods
-const std::string categories[] = { "Electronics", "Sports", "Groceries", "Furniture", "Fashion", "Books", "Toys", "Home Appliances", "Automotive", "Beauty" };
+const string categories[] = { "Electronics", "Sports", "Groceries", "Furniture", "Fashion", "Books", "Toys", "Home Appliances", "Automotive", "Beauty" };
 const std::string paymentMethods[] = { "Bank Transfer", "PayPal", "Credit Card", "Cash on Delivery", "Debit Card" };
 
 // Function to display categories and payment methods for user input
@@ -30,7 +30,7 @@ static void displayPaymentMethods() {
 }
 
 static void showMenu() {
-    cout << "\nChoose an option:\n";
+    cout << "Choose an option:\n";
     cout << "1. Bubble Sort by Date\n";
     cout << "2. Insertion Sort by Date\n";
     cout << "3. Merge Sort by Date\n";
@@ -40,13 +40,8 @@ static void showMenu() {
 
 //int main() {
 //
-//    //Transaction List 
-//    TransactionList transactionList;
-//    if (!transactionList.loadFromCSV("transactions_cleaned_version.csv")) {
-//        std::cerr << "Failed to load CSV file." << std::endl;
-//        return 1;
-//    }
-//    std::cout << "Total transactions: " << transactionList.getSize() << std::endl;
+//    //For Performance Metrics
+//
 //    long comparisons = 0, swaps = 0, steps = 0;
 //    int userChoice = 0;
 //
@@ -59,6 +54,13 @@ static void showMenu() {
 //            cin.ignore(10000, '\n');
 //            cout << "Invalid input. Please enter a valid choice.\n";
 //        }
+//
+//        TransactionList transactionList;
+//        if (!transactionList.loadFromCSV("transactions_cleaned_version.csv")) {
+//            std::cerr << "Failed to load CSV file." << std::endl;
+//            return 1;
+//        }
+//        std::cout << "Total transactions: " << transactionList.getSize() << std::endl;
 //
 //        switch (userChoice) {
 //        case 1: {

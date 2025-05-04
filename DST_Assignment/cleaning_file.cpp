@@ -1,26 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "transaction.hpp"
+#include "review.hpp"
 
 using namespace std;
-
-struct TransactionCleaning
-{
-    string customer_id;
-    string product;
-    string category;
-    float price;
-    string date;
-    string payment_method;
-};
-
-struct ReviewCleaning
-{
-    string product_id;
-    string customer_id;
-    int rating;
-    string review_text;
-};
 
 // Helper function to check if a string is a valid positive integer
 static bool isValidInteger(string s)
@@ -61,8 +45,7 @@ static bool isValidDateFormat(const string& date)
         isdigit(date[8]) && isdigit(date[9]);
 }
 
-static void cleaning_transaction(string file_path)
-{
+static void cleaning_transaction(const string& file_path) {
     ifstream input(file_path);
     if (!input.is_open()) {
         cout << "File not found. Please make sure transactions.csv is in the same directory." << endl;
@@ -74,38 +57,40 @@ static void cleaning_transaction(string file_path)
 
     int capacity = 10;
     int size = 0;
-    TransactionCleaning* transactions = new TransactionCleaning[capacity];
+    Transaction* transactions = new Transaction[capacity];
 
     while (getline(input, line)) {
         stringstream ss(line);
-        string customer_id, product, category, price_str, date, payment_method;
+        string customer_id, product, category, price_str, date_str, payment_method;
 
         getline(ss, customer_id, ',');
         getline(ss, product, ',');
         getline(ss, category, ',');
         getline(ss, price_str, ',');
-        getline(ss, date, ',');
+        getline(ss, date_str, ',');
         getline(ss, payment_method);
 
         if (customer_id.empty() || product.empty() || category.empty() ||
-            price_str.empty() || date.empty() || payment_method.empty())
+            price_str.empty() || date_str.empty() || payment_method.empty())
             continue;
 
-        if (!isValidFloat(price_str) || !isValidDateFormat(date))
+        if (!isValidFloat(price_str) || !isValidDateFormat(date_str))
             continue;
 
-        float price = stof(price_str);
+        double price = stod(price_str);
+        Transaction temp(customer_id, product, category, price, 0, 0, 0, payment_method);
+        temp.parseDate(date_str);
 
         if (size == capacity) {
             capacity *= 2;
-            TransactionCleaning* newArray = new TransactionCleaning[capacity];
-            for (int i = 0; i < size; i++)
+            Transaction* newArray = new Transaction[capacity];
+            for (int i = 0; i < size; ++i)
                 newArray[i] = transactions[i];
             delete[] transactions;
             transactions = newArray;
         }
 
-        transactions[size++] = { customer_id, product, category, price, date, payment_method };
+        transactions[size++] = temp;
     }
 
     input.close();
@@ -119,13 +104,13 @@ static void cleaning_transaction(string file_path)
     }
 
     output << "Customer ID,Product,Category,Price,Date,Payment Method\n";
-    for (int i = 0; i < size; i++) {
-        output << transactions[i].customer_id << ","
+    for (int i = 0; i < size; ++i) {
+        output << transactions[i].customerID << ","
             << transactions[i].product << ","
             << transactions[i].category << ","
             << transactions[i].price << ","
-            << transactions[i].date << ","
-            << transactions[i].payment_method << "\n";
+            << transactions[i].getDateString() << ","
+            << transactions[i].paymentMethod << "\n";
     }
 
     output.close();
@@ -133,90 +118,71 @@ static void cleaning_transaction(string file_path)
     cout << "Saved cleaned data to 'transactions_cleaned_version.csv'" << endl;
 }
 
-static void cleaning_review(string file_path)
-{
-    //open file using this one
-    ifstream myReviewFile;
-    myReviewFile.open(file_path);
-    if (!myReviewFile.is_open())
-    {
-        cout << "There is error locating the file, please make it inside your directory ya";
-        return; //this one to indicate there is error if no error return 0
+static void cleaning_review(const string& file_path) {
+    ifstream input(file_path);
+    if (!input.is_open()) {
+        cout << "Error: Unable to open file '" << file_path << "'. Please check the path." << endl;
+        return;
     }
 
-    //define the column here first
-    string line = "", product_id = "", customer_id = "", review_text = "", rating_str = ""; //the rating str to obtain string , because the csv file got string
-    int rating = 0;
-    int location = 0;
+    string line;
+    getline(input, line); // Skip header
 
-    // Manual dynamic array setup ,
     int capacity = 10;
     int size = 0;
-    ReviewCleaning* reviews = new ReviewCleaning[capacity]; //for dynamic array
+    Review* reviews = new Review[capacity];
 
-    //this one to skip the column name
-    getline(myReviewFile, line);
-
-    while (getline(myReviewFile, line))
-    {
-        //Here is where u read the line by finding comma ya
+    while (getline(input, line)) {
         stringstream ss(line);
+        string product_id, customer_id, rating_str, review_text;
+
         getline(ss, product_id, ',');
         getline(ss, customer_id, ',');
         getline(ss, rating_str, ',');
-        getline(ss, review_text); // last field
+        getline(ss, review_text);
 
-
-        //data cleaning happen here
         if (product_id.empty() || customer_id.empty() || rating_str.empty() || review_text.empty())
             continue;
+
         if (!isValidInteger(rating_str))
             continue;
 
-        //if no issue need to convert the string rating to int for storing
-        rating = stoi(rating_str);
+        int rating = stoi(rating_str);
+        Review temp(customer_id, product_id, review_text, rating);
 
-        // Resize array if needed
-        if (size == capacity)
-        {
+        if (size == capacity) {
             capacity *= 2;
-            ReviewCleaning* newArray = new ReviewCleaning[capacity];
-            for (int i = 0; i < size; i++)
+            Review* newArray = new Review[capacity];
+            for (int i = 0; i < size; ++i)
                 newArray[i] = reviews[i];
             delete[] reviews;
             reviews = newArray;
         }
 
-        // Store valid review
-        reviews[size++] = { product_id, customer_id, rating, review_text };
-
+        reviews[size++] = temp;
     }
 
-    myReviewFile.close();
-    cout << "Done storing " << size << " valid reviews." << endl;
+    input.close();
+    cout << "Stored " << size << " valid reviews." << endl;
 
-    // Save to new CSV
-    ofstream outFile("reviews_cleaned_version.csv");
-    if (!outFile.is_open()) {
-        cout << "Error creating output file." << endl;
+    ofstream output("reviews_cleaned_version.csv");
+    if (!output.is_open()) {
+        cout << "Error: Failed to create output file." << endl;
         delete[] reviews;
         return;
     }
 
-    // Write the header , since i don't have it in my array
-    outFile << "Product ID,Customer ID,Rating,Review Text\n";
-
-    // Write the data
-    for (int i = 0; i < size; i++) {
-        outFile << reviews[i].product_id << ","
-            << reviews[i].customer_id << ","
+    output << "Product ID,Customer ID,Rating,Review Text\n";
+    for (int i = 0; i < size; ++i) {
+        output << reviews[i].productID << ","
+            << reviews[i].customerID << ","
             << reviews[i].rating << ","
-            << reviews[i].review_text << "\n";
+            << reviews[i].reviewText << "\n";
     }
 
-    outFile.close();
+    output.close();
     delete[] reviews;
-    cout << "Successfully saved cleaned reviews to 'reviews_cleaned_version.csv'" << endl;
+    cout << "Saved cleaned data to 'reviews_cleaned_version.csv'" << endl;
 }
 
 //int main()

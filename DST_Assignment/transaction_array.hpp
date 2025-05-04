@@ -26,8 +26,6 @@ public:
     void quickSort();
     void mergeSort();
     void display() const;
-
-    int binarySearchByDate(const std::string& targetDate) const;
     void printAt(int index) const;
 
     void getUniqueCategories(std::string* categories, int& catCount) const;

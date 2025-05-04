@@ -252,8 +252,12 @@ void ReviewList::processOneStarReviews() {
         extractWords(current->data.reviewText, wordHead);
         current = current->next;
     }
+    std::cout << "All appearing words before sorting: " << std::endl;
+    displayAllWords(wordHead);
     sortWordFrequencies(wordHead);
     trackPerformanceMetrics();
+    std::cout << "All appearing words after sorting: " << std::endl;
+    displayAllWords(wordHead);
     std::cout << "Top 10 most frequent words: " << std::endl;
     displayTopNWords(wordHead, 10);
 }
