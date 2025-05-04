@@ -72,15 +72,53 @@ int TransactionList::getSize() const {
 }
 
 // Swap helper function for sorting
-void TransactionList::swap(TransactionNode* a, TransactionNode* b) {
-    std::swap(a->data.customerID, b->data.customerID);
-    std::swap(a->data.product, b->data.product);
-    std::swap(a->data.category, b->data.category);
-    std::swap(a->data.price, b->data.price);
-    std::swap(a->data.day, b->data.day);
-    std::swap(a->data.month, b->data.month);
-    std::swap(a->data.year, b->data.year);
-    std::swap(a->data.paymentMethod, b->data.paymentMethod);
+void TransactionList::swap(TransactionNode* node1, TransactionNode* node2) {
+    if (node1 == node2 || !node1 || !node2) return;
+
+    // If nodes are adjacent, handle carefully
+    if (node1->next == node2) {
+        // node1 before node2
+        TransactionNode* prev = node1->prev;
+        TransactionNode* next = node2->next;
+
+        if (prev) prev->next = node2;
+        node2->prev = prev;
+
+        node2->next = node1;
+        node1->prev = node2;
+
+        node1->next = next;
+        if (next) next->prev = node1;
+    }
+    else if (node2->next == node1) {
+        // node2 before node1 (same as above but reversed)
+        swap(node2, node1);
+        return;
+    }
+    else {
+        // Non-adjacent nodes
+        TransactionNode* prev1 = node1->prev;
+        TransactionNode* next1 = node1->next;
+        TransactionNode* prev2 = node2->prev;
+        TransactionNode* next2 = node2->next;
+
+        // Swap prev pointers
+        if (prev1) prev1->next = node2;
+        if (next1) next1->prev = node2;
+        if (prev2) prev2->next = node1;
+        if (next2) next2->prev = node1;
+
+        std::swap(node1->prev, node2->prev);
+        std::swap(node1->next, node2->next);
+    }
+
+    // Update head if necessary
+    if (head == node1) {
+        head = node2;
+    }
+    else if (head == node2) {
+        head = node1;
+    }
 }
 
 // Bubble sort by date

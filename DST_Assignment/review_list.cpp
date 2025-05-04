@@ -258,6 +258,6 @@ void ReviewList::processOneStarReviews() {
     trackPerformanceMetrics();
     std::cout << "All appearing words after sorting: " << std::endl;
     displayAllWords(wordHead);
-    std::cout << "Top 10 most frequent words: " << std::endl;
+    std::cout << "\n Top 10 most frequent words: " << std::endl;
     displayTopNWords(wordHead, 10);
 }

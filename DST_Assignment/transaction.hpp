@@ -1,5 +1,5 @@
-#ifndef TRANSACTION_HPP // Check if TRANSACTION_HPP is not already defined
-#define TRANSACTION_HPP // Define it
+#ifndef TRANSACTION_HPP 
+#define TRANSACTION_HPP
 
 #include <string>
 #include <sstream>
@@ -9,7 +9,7 @@
 class Transaction {
 public:
     std::string customerID;    // Customer ID
-    std::string product;       // Product name
+    std::string product;       // Product ID
     std::string category;      // Product category
     double price;              // Price of the product
     int day, month, year;      // Date (Day, Month, Year)

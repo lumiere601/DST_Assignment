@@ -65,7 +65,7 @@ static void showMenu() {
 //        switch (userChoice) {
 //        case 1: {
 //            // --------- BUBBLE SORT ---------
-//            transactionList.printAll();
+//            //transactionList.printAll();
 //            comparisons = swaps = 0;
 //            auto start = high_resolution_clock::now();
 //            transactionList.bubbleSortByDate(comparisons, swaps);
@@ -80,7 +80,7 @@ static void showMenu() {
 //        case 2: {
 //            // --------- INSERTION SORT ---------
 //            comparisons = swaps = 0;
-//            transactionList.printAll();
+//            //transactionList.printAll();
 //            auto start = high_resolution_clock::now();
 //            transactionList.insertionSortByDate(comparisons, swaps);
 //            auto end = high_resolution_clock::now();
@@ -94,7 +94,7 @@ static void showMenu() {
 //        case 3: {
 //            // --------- MERGE SORT ---------
 //            comparisons = swaps = 0;
-//            transactionList.printAll();
+//            //transactionList.printAll();
 //            auto start = high_resolution_clock::now();
 //            transactionList.mergeSortByDate(comparisons, swaps);  // Ensure mergeSort updates comparisons and swaps
 //            auto end = high_resolution_clock::now();

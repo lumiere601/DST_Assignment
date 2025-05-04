@@ -16,13 +16,16 @@ TransactionArray::~TransactionArray() {
     delete[] data;
 }
 
+
 void TransactionArray::expandIfNeeded() {
     if (count >= capacity) {
         int newCapacity = (capacity == 0) ? 10 : capacity * 2;
-        Transaction* newData = new Transaction[newCapacity];
+        Transaction* newData = new Transaction[newCapacity];  // Safe
+
         for (int i = 0; i < count; ++i) {
-            newData[i] = data[i];
+            newData[i] = data[i];  // Shallow copy is fine since Transaction has no raw pointers
         }
+
         delete[] data;
         data = newData;
         capacity = newCapacity;
@@ -31,6 +34,13 @@ void TransactionArray::expandIfNeeded() {
 
 int TransactionArray::getCount() const {
     return count;
+}
+
+// Helper to trim whitespace
+std::string static trim(const std::string& str) {
+    size_t first = str.find_first_not_of(" \t\r\n");
+    size_t last = str.find_last_not_of(" \t\r\n");
+    return (first == std::string::npos || last == std::string::npos) ? "" : str.substr(first, last - first + 1);
 }
 
 bool TransactionArray::loadFromCSV(const char* filename) {
@@ -50,19 +60,98 @@ bool TransactionArray::loadFromCSV(const char* filename) {
         getline(ss, dateStr, ',');
         getline(ss, pay, ',');
 
+        if (cid.empty() || priceStr.empty() || dateStr.empty()) continue;
+
         double price = std::stod(priceStr);
         int d, m, y;
-        std::stringstream ssDate(dateStr);
         char delim;
+        std::stringstream ssDate(dateStr);
         ssDate >> d >> delim >> m >> delim >> y;
 
         expandIfNeeded();
-        data[count++] = Transaction(cid, prod, cat, price, d, m, y, pay);
+        data[count++] = Transaction(
+            trim(cid), trim(prod), trim(cat), price, d, m, y, trim(pay)
+        );
     }
 
     file.close();
     return true;
 }
+
+void TransactionArray::sortByCategoryPayment() {
+    comparisonCount = 0;
+    swapCount = 0;
+
+    for (int i = 0; i < count - 1; ++i) {
+        for (int j = 0; j < count - i - 1; ++j) {
+            comparisonCount++;
+            if (data[j].category > data[j + 1].category ||
+                (data[j].category == data[j + 1].category &&
+                    data[j].paymentMethod > data[j + 1].paymentMethod)) {
+                swap(data[j], data[j + 1]);
+            }
+        }
+    }
+}
+
+int TransactionArray::binarySearchCategoryPayment(const std::string& category, const std::string& payment) const {
+    int left = 0, right = count - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        comparisonCount++;
+
+        if (data[mid].category == category && data[mid].paymentMethod == payment) {
+            return mid;
+        }
+        else if (data[mid].category < category ||
+            (data[mid].category == category && data[mid].paymentMethod < payment)) {
+            left = mid + 1;
+        }
+        else {
+            right = mid - 1;
+        }
+    }
+    return -1;
+}
+
+int TransactionArray::searchCategoryPaymentBinary(const std::string& category, const std::string& method, int& categoryCount, int& methodCount) {
+    int steps = 0;
+    categoryCount = 0;
+    methodCount = 0;
+    int left = 0, right = count - 1, foundIndex = -1;
+
+    while (left <= right) {
+        steps++;
+        int mid = (left + right) / 2;
+        int cmp = data[mid].category.compare(category);
+        if (cmp == 0) {
+            foundIndex = mid;
+            break;
+        }
+        else if (cmp < 0) {
+            left = mid + 1;
+        }
+        else {
+            right = mid - 1;
+        }
+    }
+
+    if (foundIndex == -1) return steps;
+
+    for (int i = foundIndex; i >= 0 && data[i].category == category; --i) {
+        steps++;
+        categoryCount++;
+        if (data[i].paymentMethod == method) methodCount++;
+    }
+    for (int i = foundIndex + 1; i < count && data[i].category == category; ++i) {
+        steps++;
+        categoryCount++;
+        if (data[i].paymentMethod == method) methodCount++;
+    }
+
+    return steps;
+}
+
 
 void TransactionArray::swap(Transaction& a, Transaction& b) {
     Transaction temp = a;
@@ -74,12 +163,10 @@ void TransactionArray::swap(Transaction& a, Transaction& b) {
 int TransactionArray::partition(int low, int high) {
     Transaction pivot = data[high];
     int i = low - 1;
-
     for (int j = low; j < high; ++j) {
         comparisonCount++;
         if (data[j].isEarlierThan(pivot)) {
-            ++i;
-            swap(data[i], data[j]);
+            swap(data[++i], data[j]);
         }
     }
     swap(data[i + 1], data[high]);
@@ -96,6 +183,8 @@ void TransactionArray::quickSort(int low, int high) {
 
 void TransactionArray::quickSort() {
     if (count > 0) {
+        comparisonCount = 0;
+        swapCount = 0;
         quickSort(0, count - 1);
     }
 }
@@ -172,13 +261,14 @@ void TransactionArray::countMatching(const std::string& category, const std::str
 
 void TransactionArray::mergeSort() {
     if (count > 0) {
+        comparisonCount = 0;
+        swapCount = 0;
         mergeSortHelper(0, count - 1);
     }
 }
 
 void TransactionArray::mergeSortHelper(int left, int right) {
-    if (left >= right)
-        return;
+    if (left >= right) return;
 
     int mid = left + (right - left) / 2;
     mergeSortHelper(left, mid);
@@ -197,7 +287,6 @@ void TransactionArray::merge(int left, int mid, int right) {
     for (int j = 0; j < n2; j++) R[j] = data[mid + 1 + j];
 
     int i = 0, j = 0, k = left;
-
     while (i < n1 && j < n2) {
         comparisonCount++;
         if (L[i].isEarlierThan(R[j])) {
